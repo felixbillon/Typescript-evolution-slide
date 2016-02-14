@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+			<link rel="stylesheet" href="css/theme/dcube.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- ====================== BETWEEN REVEAL AND SLIDES ====================== -->
+			<header class="left" style="position: absolute; left: 0px;"><img src="./img/logoDcube.png" /></header>
+			<!-- ====================== BETWEEN REVEAL AND SLIDES ====================== -->
+			
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>TypeScript 1.0->2.1</h1>
+					<p>
+						<small>Par Félix Billon</small>
+					</p>
+				</section>
+				<section>
+					<h2>Qui suis-je ?</h2>
+					<ul>
+					   <li class="fragment roll-in">Développeur web depuis un peu plus de 5 ans.</li>
+					   <li class="fragment roll-in">ESN : <a href="http://www.dcube.fr/">Dcube</a></li>
+					   <li class="fragment roll-in">J'aime typescript :)</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Sommaire</h2>
+				    <ol>
+					<li class="fragment roll-in">La base TypeScript 1.0</li>
+					<li class="fragment roll-in">L'évolution jusqu'à TypeScript 1.7.5</li>
+					<li class="fragment roll-in">Le futur TypeScript 2.1</li>
+					</ol>
+				</section>
+
+				<section>
+				<section>
+					<h2>La base : ES6</h2>
+					<ul>
+					   <li class="fragment roll-in">Transpileur ES6 vers ES5 ou ES3 tout comme babel, traceur, ...</li>
+					   <li class="fragment roll-in">Les classes, l'héritage, propriétés public et static.</li>
+					   <li class="fragment roll-in">Les fonctions fléchées, paramètre par défaut et paramètre rest.</li>
+					</ul>
+				</section>
+				<section>
+					<h2>La base : types</h2>
+					<ul>
+					   <li class="fragment roll-in">Les types basiques : number, string, boolean, array, ...</li>
+					   <li class="fragment roll-in">Inférence de type : typeage automatique d'une variable lors de son affectation.</li>
+					   <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+var x = 42;
+x = 'hello'; // ERREUR : x a été typé en tant que number
+					</code></pre>
+					</ul>
+				</section>
+				 <section>
+					<h2>La base : enum</h2>
+					<ul>
+					   <li class="fragment roll-in">Permet de nommer les éléments d'une liste numérique.</li>
+					   <li class="fragment roll-in">Peut être utilisée comme une liste de flag (décalage de bit).</li>
+					   <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+enum Weapon {
+    M16,
+    M4
+    Uzi,
+    AK74 = 10
+}
+
+// Utilisation
+var weapon = Weapon.M16;
+console.log(Weapon[0]); // "M16"
+console.log(Weapon["M16"]); // 0
+
+// Contrôle
+weapon = "hello"; // ERREUR : string is not assignable to type `Weapon`
+					   </code></pre>
+					</ul>
+				</section>
+			   <section>
+					<h2>La base : interface</h2>
+					<ul>
+					   <li class="fragment roll-in">Contrat à implémenter.</li>
+					   <li class="fragment roll-in">Differents types : fonction, array et classe.</li>
+					   <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/*Type fonction*/
+interface MyMagicFunc {
+    (source: string, destination: string): string;
+}
+let magicFn : MyMagicFunc = function(src: string, dest: string): string {
+    dest = src;
+    return dest;
+}
+
+/*Type array*/
+interface MyClassMap {
+    [index: string]: MyClass;
+}
+
+let map: MyClassMap;
+map['object1'] = new MyClass();
+var w = map['object1']; // w est de type (inférrée) MyClass
+
+/*Type class*/
+interface IAnimal {
+    wing: number;
+    hollow: boolean;
+}
+
+class Wolf implements IAnimal {
+    wing: number;
+    hollow: boolean;
+    constructor(wing: number, hollow: boolean) {
+	 this.wing = 0;
+	 this.hollow = true;
+    }
+}
+
+					   </code></pre>
+					</ul>
+				</section>
+				<section>
+					<h2>La base : généricité</h2>
+					<ul>
+					   <li class="fragment roll-in">Permet d'éviter d'utiliser any pour des fonctions traitant différents types.</li>
+					   <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/*Utilisation simple*/
+function myFunc&lt;T&gt;(arg: T): T {
+    return arg;
+}
+
+/*Avec tableau*/
+function myFunc&lt;T&gt;(arg: Array&lt;T&gt;): Array&lt;T&gt; {
+    return arg;
+}
+					   </code></pre>
+					</ul>
+				</section>
+				<section>
+					<h2>La base : module interne</h2>
+					<ul>
+					   <li class="fragment roll-in">L'interêt principal est de ne pas polluer l'espace de nom global.</li>
+					   <li class="fragment roll-in">Génère une IIFE qui wrap l'ensemble du code.</li>
+					</ul>
+				</section>
+					<section>
+					<h2>La base : module externe</h2>
+					<ul>
+					   <li class="fragment roll-in">Même interêt que les modules internes avec en plus une gestion du chargement des modules.</li>
+					   <li class="fragment roll-in">Syntaxe CommonJS et AMD supportées.</li>
+					</ul>
+				</section>
+				<section>
+					<h2>La base : fichier de définition .d.ts</h2>
+					<ul>
+					   <li class="fragment roll-in">Décrit les librairies externes.</li>
+					   <li class="fragment roll-in">Utile uniquement à la compilation, ne génère aucun js.</li>
+					</ul>
+				</section>
+				</section>
+
+				<!-- Example of nested vertical slides -->
+				<section>
+					<section>
+					<h2>L'évolution : ES6</h2>
+					<ul>
+					   <li class="fragment roll-in">Let/const.</li>
+					   <li class="fragment roll-in">Template literral.</li>
+					   <li class="fragment roll-in">Symbole.</li>
+					   <li class="fragment roll-in">For...of.</li>
+					   <li class="fragment roll-in">Spread operator.</li>
+					   <li class="fragment roll-in">Destructuration.</li>
+					   <li class="fragment roll-in">Generator.</li>
+					   <li class="fragment roll-in">Import/Export.</li>
+					   <li class="fragment roll-in">...</li>
+					</ul>
+					</section>
+					<section>
+					<h2>L'évolution : target ES6</h2>
+					<ul>
+					   <li class="fragment roll-in">Possibilité de transpiler de l'ES6.</li>
+					   <li class="fragment roll-in">Permet de coupler avec un autre transpileur si besoin.</li>
+					</ul>
+					</section>
+				    <section>
+					<h2>L'évolution : const enum</h2>
+					<ul>
+					   <li class="fragment roll-in">Permet de réduire la quantité de code générée pour une enum.</li>
+					   <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+//Code généré pour créer une enum classique
+var Weapon;
+(function (Weapon) {
+    Weapon[Weapon["M16"] = 0] = "M16";
+    Weapon[Weapon["M4"] = 1] = "M4";
+    Weapon[Weapon["Uzi"] = 2] = "Uzi";
+    Weapon[Weapon["AK74"] = 10] = "AK74";
+})(Weapon || (Weapon = {}));
+                        </code></pre>
+ <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+// Si const enum weapon
+var weapon = Weapon.M16; // équivalent à weapon = 0
+console.log(Weapon[0]); // ERREUR
+console.log(Weapon["M16"]); // ERREUR 
+                       </code></pre>
+					</ul>
+					</section>
+					 <section>
+					<h2>L'évolution : classe abstraite</h2>
+					<ul>
+					   <li class="fragment roll-in">Une classe abstraite peut avoir des méthodes non implémentées et n'est pas instanciable.</li>
+					   <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+abstract class Ship {
+    abstract fire(): string;
+    launch() { return 'Ship is launched !'}
+}
+
+let x = new Ship(); // ERREUR : impossible d'instancier une classe abstraite
+
+class XWing extends Ship {
+    fire() { return 'Piiiuuuuuu'; }
+}
+
+var myShip = new XWing(); // OK
+var myShip2: Ship = new XWing(); // OK
+myShip2.launch(); // OK
+myShip2.fire(); // OK
+                        </code></pre>
+					</ul>
+					</section>
+					 <section>
+					<h2>L'évolution : tsconfig.json</h2>
+					<ul>
+					   <li class="fragment roll-in">Contient les options de compilations et la liste des fichiers à compiler.</li>
+					   <li class="fragment roll-in">Le compilateur cherche automatiquement le tsonfig.json au sein du repertroire.</li>
+					   <li class="fragment roll-in">Supporté par beaucoup de plugin au sein des IDE (atom, visual studio, webStorm, ...).</li>
+					   <pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+{
+    "compilerOptions": {
+        "target": "CommonJS", // Module CommonJS
+        "sourceMap": true   // Facilite le débuggage
+    },
+    /*
+     * Exclure des fichiers
+     */
+    "exclude": [
+        "file.d.ts"
+    ]
+}
+                        </code></pre>
+					</ul>
+					</section>
+					<section>
+						<h2>TypeScript : module</h2>
+						<ul>
+					      <li class="fragment roll-in">Syntaxe AMD, commonJs, ES6, ...</li>
+					      <li class="fragment roll-in">Transpile AMD, commonJS, systemJs et UMD.</li>
+						  <li class="fragment roll-in">Possibilité d'utiliser --outFile pour AMD et systemJs.</li>
+					   </ul>
+					</section>
+					<section>
+						<h2>TypeScript : type union et intersection</h2>
+						<ul>
+					       <li class="fragment roll-in">Type union : A | B représente une entité qui est du type A ou B (utile pour surcharger une fonction, ...)</li>
+					       <li class="fragment roll-in">Type intersection : A & B représente une entité qui est du type A et B (utile pour composition, Object.assign, ...)</li>
+						   <li class="fragment roll-in">Inférence de type poussé.</li>
+							<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+class Xwing { fly() { } }
+class ATAT { walk() { } }
+let myShip: Xwing|ATAT = /* ... */;
+if (myShip instanceof Xwing) {
+    myShip.fly(); // OK
+} else {
+    myShip.fly(); // ERREUR : typé en tant que ATAT
+}
+							</code></pre>
+					    </ul>
+					</section>
+				</section>
+				<section>
+					<section>
+					<h2>Future : ES6/ES7</h2>
+					<ul>
+					<li class="fragment roll-in">Object Rest/Spread Properties</li>
+						<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+// Rest
+let { x, y, ...z } = { x: 1, y: 2, a: 3, b: 4 };
+x; // 1
+y; // 2
+z; // { a: 3, b: 4 }
+
+//Spread
+let n = { x, y, ...z };
+n; // { x: 1, y: 2, a: 3, b: 4 }
+						</code></pre>
+					<li class="fragment roll-in">Bind operator</li>
+						<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+// ES5
+var log = console.log.bind(console);
+							
+// ES7
+let log = ::console.log;
+						</code></pre>
+					<li class="fragment roll-in">Support async/await pour ES5 et ES3</li>
+					</ul>
+					</section>
+					<section>
+						<h2>TypeScript : control flow analysis</h2>
+						<img class="fragment roll-in" width="606" height="406" src="./img/controleFlow.gif">
+					</section>
+					<section>
+					<h2>Future : typage via JsDoc</h2>
+						<ul>
+					<li class="fragment roll-in">Le compilateur extrait des informations directement depuis la documentation du code.</li>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/**
+ * @param {string} a
+ * @param {number} b
+ * @returns {string}
+*/
+function foo(a, b){
+   return a + b;
+}
+
+// Déclaration typescript
+function foo(a: string, b: number): string {
+   return a + b;
+}
+					</code></pre>
+					</ul>
+					</section>
+					
+					<section>
+						<h2>Future : readonly</h2>
+						<ul>
+					<li class="fragment roll-in">Inférence : les propriétés possedant uniquement un getter sont marquées comme readonly.</li>
+					<li class="fragment roll-in">Peut rendre (à la compilation) un tableau/objet immuable.</li>
+					<pre class="fragment roll-in"><code class="typescript" data-trim contenteditable>
+/**
+ * Declaration
+ */
+interface Foo {
+    readonly[x: number]: number;
+}
+
+/**
+ * Utilisation
+ */
+let foo: Foo = { 0: 123, 2: 345 };
+console.log(foo[0]); // OK (lecture)
+foo[0] = 456; // ERREUR : (modification) --> Readonly !
+
+
+/**
+ * Rendre une objet immuable à la compilation
+ */
+function foo(config:{
+    readonly bar: number,
+    readonly bas: number
+}){
+    // ..
+}
+
+let config = {bar:123,bas:123};
+foo(config); // Objet immuable à la compilation
+							</code></pre>
+					</ul>
+					</section>
+					<section>
+						<h2>Future : en vrac</h2>
+						<ul>
+					<li class="fragment roll-in">Possibilité d'utiliser la compilations conditionel (si running on node, ...)</li>
+					<li class="fragment roll-in">Permettre la création de décorateur ambiant utile pour des outils externes : @@deprecated('blabla'), @@suppressWarning("disallow-leading-underscore")</li>
+					<li class="fragment roll-in">...</li>
+					</ul>
+					</section>
+				</section>
+					<section>
+						<h1>Merci à tous !</h1>
+					</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
